@@ -66,7 +66,7 @@ ffi.cdef [[
     typedef unsigned long HANDLE;
     typedef HANDLE HWND;
     typedef int bInvert;
- 
+
     HWND GetActiveWindow(void);
 
     BOOL FlashWindow(HWND hWnd, BOOL bInvert);
@@ -111,6 +111,7 @@ function main()
     getLastUpdate()
     hwin = ffi.C.GetActiveWindow()
 
+		sampAddChatMessage("{5AA5FF}[TramBot by ik0nka]{FFFFFF} Загружен! Активация: /tram", -1)
     sampRegisterChatCommand('tram', function()
         window.v = not window.v
     end)
@@ -149,15 +150,15 @@ function main()
 
 
                 if 2 >= stopp then
-                    gas = false 
+                    gas = false
                     tormoz = true
                 end
 
-                if gas and speed < maxSpeed then 
+                if gas and speed < maxSpeed then
                     writeMemory(12006520, 1, 255, false)
                 end
 
-                if tormoz then 
+                if tormoz then
                     writeMemory(12006516, 1, 255, false)
                 end
             end
@@ -171,18 +172,18 @@ function main()
                         else
                             BeginToPoint(-2262.97, 513.04, 1487.69, 0.7, -255, false)
                             control.step = 2
-                        end 
+                        end
                     elseif control.setCirclesEat.v == stats.circlesEat and control.autoEat.v then
-                        BeginToPoint(-2258.41, 504.89, 1487.69, 0.7, -255, false) 
+                        BeginToPoint(-2258.41, 504.89, 1487.69, 0.7, -255, false)
                         BeginToPoint(-2258.11, 511.5, 1487.7, 0.7, -255, false)
                         control.step = 0
-                    end 
+                    end
                 elseif control.step == 2 then
                     for i = 0, 5 do
                         setGameKeyState(21, 255)
                         wait(300)
                     end
-                    wait(4000) 
+                    wait(4000)
                     if isCharInAnyTrain(PLAYER_PED) then
                         control.step = 4
                     end
@@ -247,8 +248,8 @@ onReceiveRpc = function(id, bs)
                 control.kd = control.kd + 1
                 if control.kd == 1 then
                     charPosX, charPosY, charPosZ = mx, my, mz
-                    blipX, blipY, blipZ = x, y, z 
-                else 
+                    blipX, blipY, blipZ = x, y, z
+                else
                     charPosX, charPosY, charPosZ = bots.rage.pos[1], bots.rage.pos[2], bots.rage.pos[3]
                     blipX, blipY, blipZ = x, y, z
                 end
@@ -269,13 +270,13 @@ end
 
 zxc.onShowDialog = function(dialogId, style, title, button1, button2, text)
     if control.autoTake.v then
-        if title:find("Регистрация на рейс") and not text:find("освободить") then 
+        if title:find("Регистрация на рейс") and not text:find("освободить") then
             sampSendDialogResponse(dialogId, 1, -1, -1)
             return false
-        elseif title:find("Регистрация на рейс") and text:find("освободить") then 
+        elseif title:find("Регистрация на рейс") and text:find("освободить") then
             sampSendDialogResponse(dialogId, 0, -1, -1)
             return false
-        elseif title:find("Все рейсы заняты") and text:find("живой очереди") then 
+        elseif title:find("Все рейсы заняты") and text:find("живой очереди") then
             sampSendDialogResponse(dialogId, 0, -1, -1)
             return false
         elseif title:find("Все рейсы заняты") or text:find("Сейчас все рабочие места на рейсах заняты") then
@@ -303,9 +304,9 @@ zxc.onShowDialog = function(dialogId, style, title, button1, button2, text)
                 sampSendDialogResponse(dialogId, 1, 5, nil)
             elseif control.eat.v == 6 then
                 sampSendDialogResponse(dialogId, 1, 6, nil)
-            end 
+            end
             return false
-        end 
+        end
     end
     if dialogId == 15039 then
         if control.autoOff.v then
@@ -392,7 +393,7 @@ end
 
 teleport = function(x, y, z)
     local data = samp_create_sync_data('vehicle')
-    
+
     lua_thread.create(function()
         while true do wait(speedTp.v)
             if isCharInAnyTrain(PLAYER_PED) then
@@ -408,8 +409,8 @@ teleport = function(x, y, z)
                 data.moveSpeed.x = -0.06
                 data.moveSpeed.y = -0.06
                 data.moveSpeed.z = -0.06
-                
-                data.position.x = charPosX 
+
+                data.position.x = charPosX
                 data.position.y = charPosY
                 data.position.z = charPosZ
 
@@ -538,7 +539,7 @@ function imgui.OnDrawFrame()
             imgui.SetCursorPos(imgui.ImVec2(50, 110));
                 if imgui.Button(fa.ICON_FA_TRAIN .. u8' Бот', imgui.ImVec2(130, 70)) then
                     menu = 'bots'
-                end 
+                end
 
             imgui.SetCursorPos(imgui.ImVec2(200, 110));
                 if imgui.Button(fa.ICON_FA_PAPER_PLANE .. u8' Уведомление', imgui.ImVec2(130, 70)) then
@@ -559,7 +560,7 @@ function imgui.OnDrawFrame()
                 if imgui.Button(fa.ICON_FA_CODE .. u8' О скрипте', imgui.ImVec2(130, 70)) then
                     menu = 'about'
                 end
-                       
+
         end
 
         if menu == 'bots' then
@@ -689,27 +690,27 @@ function imgui.OnDrawFrame()
                 imgui.Checkbox(u8'Выключение бота', control.autoOff)
             imgui.SetCursorPos(imgui.ImVec2(200, 80));
                 imgui.Checkbox(u8'Разворот игры', control.reversal)
-            imgui.SetCursorPos(imgui.ImVec2(380, 80));    
+            imgui.SetCursorPos(imgui.ImVec2(380, 80));
                 imgui.Checkbox(u8'Мигание окном', control.blinking)
             imgui.SetCursorPos(imgui.ImVec2(10.8, 110));
                 imgui.Checkbox(u8'Уведомление в TG', control.telegramNotf)
             imgui.SetCursorPos(imgui.ImVec2(200, 110));
                 imgui.Checkbox(u8'Выход из игры', control.autoExit)
-        end 
+        end
 
         if menu == 'additionally' then
             imgui.SetCursorPos(imgui.ImVec2(10.8, 80));
                 if imgui.Checkbox(u8'Статистика', control.stats) then
                     window_stats.v = not window_stats.v
                 end
-            imgui.SetCursorPos(imgui.ImVec2(200, 80));    
+            imgui.SetCursorPos(imgui.ImVec2(200, 80));
                 imgui.Checkbox(u8'Авто взятие рейса', control.autoTake)
-            imgui.SetCursorPos(imgui.ImVec2(380, 80));    
-                imgui.RadioButton(u8'Первая стойка', control.selectMarker, 1) 
+            imgui.SetCursorPos(imgui.ImVec2(380, 80));
+                imgui.RadioButton(u8'Первая стойка', control.selectMarker, 1)
             imgui.SetCursorPos(imgui.ImVec2(380, 110));
                 imgui.RadioButton(u8'Вторая стойка', control.selectMarker, 2)
 
-            imgui.SetCursorPos(imgui.ImVec2(10.8, 110));  
+            imgui.SetCursorPos(imgui.ImVec2(10.8, 110));
                 imgui.Checkbox(u8'Авто еда', control.autoEat)
 
             imgui.SetCursorPos(imgui.ImVec2(200, 110));
@@ -820,7 +821,7 @@ function Dark()
     local clr = imgui.Col
     local ImVec4 = imgui.ImVec4
     local ImVec2 = imgui.ImVec2
- 
+
     style.WindowPadding = ImVec2(6, 6)
     style.WindowRounding = 15.0
     style.FramePadding = ImVec2(5, 5)
@@ -833,8 +834,8 @@ function Dark()
     style.GrabRounding = 7.0
     style.ChildWindowRounding = 8.0
     style.FrameRounding = 6.0
-   
- 
+
+
     colors[clr.Text] = ImVec4(0.95, 0.96, 0.98, 1.00)
     colors[clr.TextDisabled] = ImVec4(0.36, 0.42, 0.47, 1.00)
     colors[clr.WindowBg] = ImVec4(0.11, 0.15, 0.17, 1.00)
@@ -960,19 +961,19 @@ function processing_telegram_messages(result)
                                 local sendMessageTelegram = text:match('^!send (.+)')
                                 sampSendChat(sendMessageTelegram)
                                 sendTelegramNotification('Отправил!')
-                            elseif text:match('^!exit') then 
+                            elseif text:match('^!exit') then
                                 sampProcessChatInput('/q')
                                 sendTelegramNotification('Вышел!')
-                            elseif text:match('^!start') then 
+                            elseif text:match('^!start') then
                                 control.start = true
                                 sendTelegramNotification('Бот успешно включен!')
-                            elseif text:match('^!stop') then 
+                            elseif text:match('^!stop') then
                                 control.start = false
                                 sendTelegramNotification('Бот успешно выключен!')
-                            elseif text:match('^!close') then 
+                            elseif text:match('^!close') then
                                 sampSendDialogResponse(15039, 1, 0, nil)
                                 sendTelegramNotification('Диалог закрыт!')
-                            elseif text:match('^!crash') then 
+                            elseif text:match('^!crash') then
                                 crash.v = not crash.v
                                 sendTelegramNotification('Крашнул!')
                             else
@@ -1053,7 +1054,7 @@ function GetAngleBeetweenTwoPoints(x2,y2)
     lx = math.abs(lx)
     ly = math.abs(ly)
     if mode == 1 then ly = ly/lx;
-    else ly = lx/ly; end 
+    else ly = lx/ly; end
     ly = math.atan(ly)
     ly = ly + plus
     return ly
